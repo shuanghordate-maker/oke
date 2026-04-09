@@ -12,14 +12,7 @@
         .fade-in { animation: fadeIn 0.3s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
         .password-container { position: relative; }
-        .password-toggle { 
-            position: absolute; 
-            right: 0.75rem; 
-            top: 50%; 
-            transform: translateY(-50%); 
-            cursor: pointer; 
-            color: #6b7280; 
-        }
+        .password-toggle { position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); cursor: pointer; color: #6b7280; }
         .password-toggle:hover { color: #374151; }
     </style>
 </head>
@@ -43,9 +36,7 @@
                     <div class="password-container mt-1">
                         <input type="password" id="auth-password" required class="w-full p-2 border rounded outline-none focus:ring-2 focus:ring-blue-500 pr-10">
                         <button type="button" class="password-toggle focus:outline-none" onclick="togglePasswordVisibility('auth-password', this)">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.29 3.29m0 0a10.05 10.05 0 015.188-1.583c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0l-3.29-3.29"></path>
-                            </svg>
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.29 3.29m0 0a10.05 10.05 0 015.188-1.583c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0l-3.29-3.29"></path></svg>
                         </button>
                     </div>
                 </div>
@@ -62,47 +53,84 @@
     <!-- ========================================== -->
     <!-- HALAMAN: DASHBOARD ADMIN -->
     <!-- ========================================== -->
-    <div id="page-app" class="hidden min-h-screen bg-gray-50 fade-in">
-        <!-- Navbar -->
-        <nav class="bg-blue-600 text-white p-4 shadow-lg">
+    <div id="page-admin" class="hidden min-h-screen bg-gray-50 fade-in">
+        <nav class="bg-blue-800 text-white p-4 shadow-lg">
             <div class="max-w-6xl mx-auto flex justify-between items-center">
-                <div class="font-bold text-xl">Supabase App</div>
+                <div class="font-bold text-xl flex items-center gap-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                    Dasbor Admin
+                </div>
                 <div class="flex gap-4 items-center">
-                    <span id="nav-user-email" class="text-sm hidden sm:block opacity-90"></span>
-                    <button id="btn-logout" class="bg-red-500 px-3 py-1 rounded text-sm hover:bg-red-600 transition">Keluar</button>
+                    <span id="nav-email-admin" class="text-sm hidden sm:block opacity-90"></span>
+                    <button onclick="logoutUser()" class="bg-red-500 px-3 py-1 rounded text-sm hover:bg-red-600 transition">Keluar</button>
                 </div>
             </div>
         </nav>
 
         <main class="max-w-6xl mx-auto p-6">
-            <!-- Section Dashboard: Tabel User -->
-            <div id="section-dashboard" class="space-y-6">
-                <div class="bg-white p-6 rounded-xl shadow-sm border">
-                    <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-2xl font-bold text-gray-800">Manajemen Pengguna</h2>
-                        <button onclick="fetchUsers()" class="bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-1 rounded text-sm font-medium transition flex items-center gap-2">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-                            Refresh
-                        </button>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse">
-                            <thead>
-                                <tr class="bg-gray-100 text-gray-700">
-                                    <th class="p-3 border-b font-semibold">Email</th>
-                                    <th class="p-3 border-b font-semibold text-center w-48">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody id="users-list">
-                                <tr><td colspan="2" class="p-4 text-center text-gray-500">Memuat data...</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
+            <div class="bg-white p-6 rounded-xl shadow-sm border">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold text-gray-800">Manajemen Pengguna & Hak Akses</h2>
+                    <button onclick="fetchUsers()" class="bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-1 rounded text-sm font-medium transition flex items-center gap-2">
+                        Refresh
+                    </button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-gray-100 text-gray-700">
+                                <th class="p-3 border-b font-semibold">Email</th>
+                                <th class="p-3 border-b font-semibold text-center w-24">Status</th>
+                                <th class="p-3 border-b font-semibold text-center w-64">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="users-list">
+                            <tr><td colspan="3" class="p-4 text-center text-gray-500">Memuat data...</td></tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </main>
     </div>
 
+    <!-- ========================================== -->
+    <!-- HALAMAN: DASHBOARD USER BIASA -->
+    <!-- ========================================== -->
+    <div id="page-user" class="hidden min-h-screen bg-gray-50 fade-in">
+        <nav class="bg-green-600 text-white p-4 shadow-lg">
+            <div class="max-w-4xl mx-auto flex justify-between items-center">
+                <div class="font-bold text-xl flex items-center gap-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                    Dasbor Pengguna
+                </div>
+                <div class="flex gap-4 items-center">
+                    <span id="nav-email-user" class="text-sm hidden sm:block opacity-90"></span>
+                    <button onclick="logoutUser()" class="bg-red-500 px-3 py-1 rounded text-sm hover:bg-red-600 transition">Keluar</button>
+                </div>
+            </div>
+        </nav>
+
+        <main class="max-w-4xl mx-auto p-6 mt-10">
+            <div class="bg-white p-8 rounded-xl shadow-sm border text-center">
+                <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">Selamat Datang!</h2>
+                <p class="text-gray-500 mb-6">Anda berhasil masuk sebagai <strong class="text-gray-800">Pengguna Biasa (User)</strong>.</p>
+                
+                <div class="bg-gray-50 p-4 rounded-lg inline-block text-left border">
+                    <p class="text-sm text-gray-600">Email Akun Anda:</p>
+                    <p id="profile-email" class="font-bold text-gray-900"></p>
+                </div>
+                
+                <p class="mt-8 text-sm text-gray-400">Hubungi Administrator jika Anda membutuhkan akses ke menu lain.</p>
+            </div>
+        </main>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- LOGIKA JAVASCRIPT -->
+    <!-- ========================================== -->
     <script>
         const SUPABASE_URL = 'https://kbhfsclnlcetsckdxcxl.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_JFUcdEDvO1cDRfoNTMEuyw_hDMbx5i3';
@@ -114,48 +142,53 @@
         function togglePasswordVisibility(inputId, btnElement) {
             const inputField = document.getElementById(inputId);
             const isPassword = inputField.type === 'password';
-            
             inputField.type = isPassword ? 'text' : 'password';
             
             if (isPassword) {
-                btnElement.innerHTML = `
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                    </svg>
-                `;
+                btnElement.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>`;
             } else {
-                btnElement.innerHTML = `
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.29 3.29m0 0a10.05 10.05 0 015.188-1.583c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0l-3.29-3.29"></path>
-                    </svg>
-                `;
+                btnElement.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.29 3.29m0 0a10.05 10.05 0 015.188-1.583c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0l-3.29-3.29"></path></svg>`;
             }
         }
 
-        // --- ROUTING SEDERHANA ---
-        async function checkRoute() {
+        // --- FUNGSI PINDAH HALAMAN (ROUTING) ---
+        function showPage(pageId) {
+            document.getElementById('page-auth').classList.add('hidden');
+            document.getElementById('page-admin').classList.add('hidden');
+            document.getElementById('page-user').classList.add('hidden');
+            document.getElementById(pageId).classList.remove('hidden');
+        }
+
+        // --- CEK SESI & ROLE ---
+        async function checkSessionAndRoute() {
             const { data: { session } } = await supabaseClient.auth.getSession();
 
             if (!session) {
-                document.getElementById('page-auth').classList.remove('hidden');
-                document.getElementById('page-app').classList.add('hidden');
+                showPage('page-auth');
                 return;
             }
 
-            document.getElementById('page-auth').classList.add('hidden');
-            document.getElementById('page-app').classList.remove('hidden');
+            // Ambil role user dari database
+            const { data: userData, error } = await supabaseClient.from('users').select('role').eq('id', session.user.id).single();
             
-            // Tampilkan email user di navbar
-            document.getElementById('nav-user-email').innerText = session.user.email;
+            // Jika data belum ada, anggap sebagai 'user' biasa
+            const userRole = (userData && userData.role) ? userData.role : 'user';
 
-            fetchUsers();
+            if (userRole === 'admin') {
+                document.getElementById('nav-email-admin').innerText = session.user.email;
+                showPage('page-admin');
+                fetchUsers(); // Hanya admin yang meload data tabel
+            } else {
+                document.getElementById('nav-email-user').innerText = session.user.email;
+                document.getElementById('profile-email').innerText = session.user.email;
+                showPage('page-user');
+            }
         }
 
-        // --- AUTH LOGIC ---
+        // --- LOGIKA FORM AUTHENTICATION ---
         document.getElementById('auth-switch-link').onclick = () => {
             isRegisterMode = !isRegisterMode;
-            document.getElementById('auth-title').innerText = isRegisterMode ? 'Daftar' : 'Masuk';
+            document.getElementById('auth-title').innerText = isRegisterMode ? 'Daftar Akun' : 'Masuk';
             document.getElementById('btn-auth-submit').innerText = isRegisterMode ? 'Buat Akun' : 'Masuk';
             document.getElementById('auth-switch-text').innerText = isRegisterMode ? 'Sudah punya akun?' : 'Belum punya akun?';
             document.getElementById('auth-switch-link').innerText = isRegisterMode ? 'Login' : 'Daftar';
@@ -184,45 +217,74 @@
                 msg.className = "mb-4 p-3 rounded text-sm text-center bg-red-100 text-red-700";
                 msg.classList.remove('hidden');
             } else {
+                // Jika register, masukkan juga ke tabel public.users dengan role 'user'
                 if (isRegisterMode && data.user) {
-                     await supabaseClient.from('users').insert([{ id: data.user.id, email: email }]);
+                     await supabaseClient.from('users').insert([{ id: data.user.id, email: email, role: 'user' }]);
                 }
+                
                 document.getElementById('form-auth').reset();
                 const passInput = document.getElementById('auth-password');
-                if(passInput.type === 'text') {
-                    togglePasswordVisibility('auth-password', passInput.nextElementSibling);
-                }
-                checkRoute();
+                if(passInput.type === 'text') togglePasswordVisibility('auth-password', passInput.nextElementSibling);
+                
+                checkSessionAndRoute();
             }
         };
 
-        // --- MANAJEMEN USER (ADMIN) ---
+        // --- MANAJEMEN USER (KHUSUS ADMIN) ---
         async function fetchUsers() {
             const list = document.getElementById('users-list');
-            list.innerHTML = '<tr><td colspan="2" class="p-4 text-center text-gray-500">Memuat data...</td></tr>';
+            list.innerHTML = '<tr><td colspan="3" class="p-4 text-center text-gray-500">Memuat data...</td></tr>';
             
-            const { data, error } = await supabaseClient.from('users').select('*');
+            // Ambil data dan urutkan (Admin tampil duluan)
+            const { data, error } = await supabaseClient.from('users').select('*').order('role', { ascending: true });
             
             if (error) {
-                list.innerHTML = `<tr><td colspan="2" class="p-4 text-center text-red-500">Error: ${error.message}</td></tr>`;
+                list.innerHTML = `<tr><td colspan="3" class="p-4 text-center text-red-500">Error: ${error.message}</td></tr>`;
                 return;
             }
 
             if(data.length === 0) {
-                 list.innerHTML = `<tr><td colspan="2" class="p-4 text-center text-gray-500">Belum ada data user.</td></tr>`;
+                 list.innerHTML = `<tr><td colspan="3" class="p-4 text-center text-gray-500">Belum ada data user.</td></tr>`;
                  return;
             }
 
-            list.innerHTML = data.map(u => `
+            list.innerHTML = data.map(u => {
+                const roleText = u.role === 'admin' ? 'Admin' : 'User';
+                const roleBadge = u.role === 'admin' 
+                    ? '<span class="bg-purple-100 text-purple-800 text-xs font-bold px-2 py-1 rounded-full border border-purple-200">ADMIN</span>' 
+                    : '<span class="bg-gray-100 text-gray-600 text-xs font-bold px-2 py-1 rounded-full border border-gray-200">USER</span>';
+                
+                // Tentukan tombol Ganti Status
+                const toggleRoleBtnText = u.role === 'admin' ? 'Jadikan User' : 'Jadikan Admin';
+                const newRole = u.role === 'admin' ? 'user' : 'admin';
+                const roleBtnClass = u.role === 'admin' ? 'bg-orange-50 text-orange-600 border-orange-200 hover:bg-orange-100' : 'bg-emerald-50 text-emerald-600 border-emerald-200 hover:bg-emerald-100';
+
+                return `
                 <tr class="border-b hover:bg-gray-50 transition">
-                    <td class="p-3 text-gray-800">${u.email}</td>
-                    <td class="p-3 text-center space-x-2">
-                        <button onclick="adminResetPw('${u.id}', '${u.email}')" class="bg-blue-50 text-blue-600 border border-blue-200 px-3 py-1.5 rounded text-sm font-semibold hover:bg-blue-100 transition" title="Ubah Password">Ubah PW</button>
-                        <button onclick="adminDeleteUser('${u.id}', '${u.email}')" class="bg-red-50 text-red-600 border border-red-200 px-3 py-1.5 rounded text-sm font-semibold hover:bg-red-100 transition" title="Hapus User">Hapus</button>
+                    <td class="p-3 text-gray-800 font-medium">${u.email}</td>
+                    <td class="p-3 text-center">${roleBadge}</td>
+                    <td class="p-3 text-center space-x-1">
+                        <button onclick="adminToggleRole('${u.id}', '${u.email}', '${newRole}')" class="${roleBtnClass} border px-2 py-1.5 rounded text-xs font-semibold transition" title="Ubah Hak Akses">${toggleRoleBtnText}</button>
+                        <button onclick="adminResetPw('${u.id}', '${u.email}')" class="bg-blue-50 text-blue-600 border border-blue-200 px-2 py-1.5 rounded text-xs font-semibold hover:bg-blue-100 transition" title="Ubah Password">Ubah PW</button>
+                        <button onclick="adminDeleteUser('${u.id}', '${u.email}')" class="bg-red-50 text-red-600 border border-red-200 px-2 py-1.5 rounded text-xs font-semibold hover:bg-red-100 transition" title="Hapus User">Hapus</button>
                     </td>
                 </tr>
-            `).join('');
+                `;
+            }).join('');
         }
+
+        // Fitur Ubah Role (Jadikan Admin / User)
+        window.adminToggleRole = async (id, email, newRole) => {
+            const roleName = newRole === 'admin' ? 'Admin' : 'User Biasa';
+            if (!confirm(`Apakah Anda yakin ingin mengubah akun ${email} menjadi ${roleName}?`)) return;
+
+            const { error } = await supabaseClient.rpc('update_user_role_admin', { target_user_id: id, new_role: newRole });
+            if (error) {
+                alert("Gagal mengubah status!\nError: " + error.message);
+            } else {
+                fetchUsers();
+            }
+        };
 
         window.adminResetPw = async (id, email) => {
             const newPw = prompt(`Ubah password untuk:\n${email}\n\nMasukkan password baru (Min. 6 Karakter):`);
@@ -230,34 +292,25 @@
             if (newPw.length < 6) return alert("Password minimal 6 karakter!");
             
             const { error } = await supabaseClient.rpc('update_user_password_admin', { target_user_id: id, new_password: newPw });
-            
-            if (error) {
-                alert("Gagal memproses!\nError: " + error.message);
-            } else {
-                alert("Password untuk " + email + " berhasil diubah!");
-            }
+            if (error) alert("Gagal memproses!\nError: " + error.message);
+            else alert("Password untuk " + email + " berhasil diubah!");
         };
 
         window.adminDeleteUser = async (id, email) => {
             if (!confirm(`Hapus permanen user ${email}?\nData tidak dapat dikembalikan.`)) return;
-            
             const { error } = await supabaseClient.rpc('delete_user_admin', { target_user_id: id });
-            
-            if (error) {
-                 alert("Gagal menghapus!\nError: " + error.message);
-            } else { 
-                 fetchUsers(); 
-            }
+            if (error) alert("Gagal menghapus!\nError: " + error.message);
+            else fetchUsers(); 
         };
 
         // --- LOGOUT ---
-        document.getElementById('btn-logout').onclick = async () => {
+        window.logoutUser = async () => {
             await supabaseClient.auth.signOut();
-            checkRoute();
+            checkSessionAndRoute();
         };
 
-        // Jalankan saat pertama dimuat
-        checkRoute();
+        // Jalankan saat web pertama kali dimuat
+        checkSessionAndRoute();
     </script>
 </body>
 </html>
